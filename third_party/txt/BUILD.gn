@@ -141,6 +141,7 @@ source_set("txt") {
     "//third_party/harfbuzz",
     "//third_party/icu",
     "//third_party/skia",
+    "//third_party/skia/modules/skottie",
   ]
 
   deps = [
@@ -337,5 +338,17 @@ executable("txt_benchmarks") {
     sources += [ "benchmarks/skparagraph_benchmarks.cc" ]
 
     deps += [ "//third_party/skia/modules/skparagraph" ]
+  }
+}
+
+static_library("txt_lib") {
+  complete_static_lib = true
+  deps = [
+    ":txt",
+  ]
+  
+  # Add opengl32.lib dependency on Windows to fix wglGetCurrentContext link error
+  if (is_win) {
+    ldflags = [ "opengl32.lib" ]
   }
 }

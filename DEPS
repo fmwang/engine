@@ -104,6 +104,9 @@ vars = {
 
   'ocmock_tag': 'v3.4.3',
 
+  # harfbuzz is used by Skia and Flutter.
+  'harfbuzz_revision': '6b44bf85382146b355a5a3cbbfde48166721ce52', # 2.5.2
+
   # Build bot tooling for iOS
   'ios_tools_revision': '69b7c1b160e7107a6a98d948363772dc9caea46f',
 
@@ -154,7 +157,7 @@ deps = {
    Var('fuchsia_git') + '/third_party/rapidjson' + '@' + 'ef3564c5c8824989393b87df25355baf35ff544b',
 
   'src/third_party/harfbuzz':
-   Var('fuchsia_git') + '/third_party/harfbuzz' + '@' + 'f5c000538699a4e40649508a44f41d37035e6c35',
+   Var('github_git') + '/harfbuzz/harfbuzz' + '@' + Var('harfbuzz_revision'),
 
   'src/third_party/libcxx':
    Var('fuchsia_git') + '/third_party/libcxx' + '@' + '7524ef50093a376f334a62a7e5cebf5d238d4c99',
@@ -335,7 +338,7 @@ deps = {
    Var('dart_git') + '/stack_trace.git' + '@' + Var('dart_stack_trace_tag'),
 
   'src/third_party/dart/third_party/pkg/stagehand':
-   Var('dart_git') + '/stagehand.git' + '@' + Var('dart_stagehand_tag'),
+   Var('github_git') + '/dart-archive/stagehand.git' + '@' + Var('dart_stagehand_tag'),
 
   'src/third_party/dart/third_party/pkg/stream_channel':
    Var('dart_git') + '/stream_channel.git' + '@' + Var('dart_stream_channel_tag'),
@@ -353,7 +356,7 @@ deps = {
    Var('dart_git') + '/test_reflective_loader.git' + '@' + Var('dart_test_reflective_loader_tag'),
 
   'src/third_party/dart/third_party/pkg/tflite_native':
-   Var('dart_git') + '/tflite_native.git' + '@' + Var('dart_tflite_native_rev'),
+   Var('github_git') + '/dart-archive/tflite_native.git' + '@' + Var('dart_tflite_native_rev'),
 
   'src/third_party/dart/third_party/pkg/typed_data':
    Var('dart_git') + '/typed_data.git' + '@' + Var('dart_typed_data_tag'),
@@ -589,12 +592,12 @@ hooks = [
     'pattern': '.',
     'action': ['python', 'src/build/vs_toolchain.py', 'update'],
   },
-  {
-    'name': 'generate_package_files',
-    'pattern': '.',
-    'cwd': 'src/',
-    'action': ['python', 'flutter/tools/generate_package_files.py'],
-  },
+  # {
+  #   'name': 'generate_package_files',
+  #   'pattern': '.',
+  #   'cwd': 'src/',
+  #   'action': ['python', 'flutter/tools/generate_package_files.py'],
+  # },
   {
     # Ensure that we don't accidentally reference any .pyc files whose
     # corresponding .py files have already been deleted.
@@ -606,20 +609,20 @@ hooks = [
         'src/tools',
     ],
   },
-  {
-    'name': '7zip',
-    'pattern': '.',
-    'condition': 'download_windows_deps',
-    'action': [
-      'download_from_google_storage',
-      '--no_auth',
-      '--no_resume',
-      '--bucket',
-      'dart-dependencies',
-      '--platform=win32',
-      '--extract',
-      '-s',
-      'src/third_party/dart/third_party/7zip.tar.gz.sha1',
-    ],
-  },
+  # {
+  #   'name': '7zip',
+  #   'pattern': '.',
+  #   'condition': 'download_windows_deps',
+  #   'action': [
+  #     'download_from_google_storage',
+  #     '--no_auth',
+  #     '--no_resume',
+  #     '--bucket',
+  #     'dart-dependencies',
+  #     '--platform=win32',
+  #     '--extract',
+  #     '-s',
+  #     'src/third_party/dart/third_party/7zip.tar.gz.sha1',
+  #   ],
+  # },
 ]
